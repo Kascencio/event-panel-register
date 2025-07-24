@@ -104,7 +104,7 @@ export default function AdminLoginPage() {
 
             <div className="mt-6 p-3 bg-gray-800 rounded-lg">
               <p className="text-xs text-gray-400 text-center">
-                <strong>Demo:</strong> Usuario: admin | Contraseña: admin123
+                
               </p>
             </div>
           </CardContent>
