@@ -1,0 +1,90 @@
+// Prisma schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Participant {
+  id            String           @id @default(cuid())
+  fullName      String           @map("full_name")
+  phone         String
+  age           String
+  email         String?
+  paymentStatus PaymentStatus    @default(UNPAID) @map("payment_status")
+  totalAmount   Float            @default(100)    @map("total_amount")
+  paidAmount    Float            @default(0)      @map("paid_amount")
+  qrCode        String?          @map("qr_code") @db.Text
+  registeredAt  DateTime         @default(now())  @map("registered_at")
+  updatedAt     DateTime         @updatedAt       @map("updated_at")
+  version       Int              @default(1)
+  createdBy     String           @default("system") @map("created_by")
+  updatedBy     String           @default("system") @map("updated_by")
+
+  // Relaciones
+  paymentHistory PaymentHistory[]
+  scanSessions   ScanSession[]
+  qrLogs         QrLog[]
+
+  @@map("participants")
+}
+
+model PaymentHistory {
+  id                   Int            @id @default(autoincrement())
+  participantId        String         @map("participant_id")
+  previousPaidAmount   Float          @default(0) @map("previous_paid_amount")
+  newPaidAmount        Float          @default(0) @map("new_paid_amount")
+  previousTotalAmount  Float          @default(0) @map("previous_total_amount")
+  newTotalAmount       Float          @default(0) @map("new_total_amount")
+  previousStatus       PaymentStatus  @map("previous_status")
+  newStatus            PaymentStatus  @map("new_status")
+  updatedBy            String         @map("updated_by")
+  updatedAt            DateTime       @default(now()) @map("updated_at")
+  notes                String?
+
+  // Relaciones
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@map("payment_history")
+}
+
+model ScanSession {
+  id            Int       @id @default(autoincrement())
+  participantId String    @map("participant_id")
+  scannedAt     DateTime  @default(now()) @map("scanned_at")
+  scannedBy     String?   @map("scanned_by")
+  deviceInfo    String?   @map("device_info")
+  location      String?
+
+  // Relaciones
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@map("scan_sessions")
+}
+
+model QrLog {
+  id             Int         @id @default(autoincrement())
+  participantId  String      @map("participant_id")
+  qrFilename     String      @map("qr_filename")
+  actionType     ActionType  @map("action_type")
+  sentTo         String      @map("sent_to")
+  sentAt         DateTime    @default(now()) @map("sent_at")
+
+  participant    Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@map("qr_logs")
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  PARTIAL
+}
+
+enum ActionType {
+  generate
+  resend
+}
