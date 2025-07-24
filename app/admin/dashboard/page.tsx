@@ -292,7 +292,7 @@ export default function AdminDashboard() {
                     value={newParticipant.totalAmount}
                     onChange={(e) => setNewParticipant({ ...newParticipant, totalAmount: Number(e.target.value) })}
                     className="bg-gray-800 border-gray-700 text-white"
-                    placeholder="100"
+                    placeholder="300"
                   />
                 </div>
                 <div>
@@ -302,7 +302,7 @@ export default function AdminDashboard() {
                     value={newParticipant.paidAmount}
                     onChange={(e) => setNewParticipant({ ...newParticipant, paidAmount: Number(e.target.value) })}
                     className="bg-gray-800 border-gray-700 text-white"
-                    placeholder="0"
+                    placeholder="300"
                   />
                 </div>
               </div>
@@ -538,8 +538,8 @@ export default function AdminDashboard() {
                             {participant.email && <div>Email: {participant.email}</div>}
                             <div className="flex items-center gap-4 mt-2">
                               <div className="text-green-400">Pagado: ${participant.paidAmount || 0}</div>
-                              <div className="text-blue-400">Total: ${participant.totalAmount || 100}</div>
-                              {(participant.totalAmount || 100) - (participant.paidAmount || 0) > 0 && (
+                              <div className="text-blue-400">Total: ${participant.totalAmount || 300}</div>
+                              {(participant.totalAmount || 300) - (participant.paidAmount || 0) > 0 && (
                                 <div className="text-red-400">
                                   Falta: ${(participant.totalAmount || 100) - (participant.paidAmount || 0)}
                                 </div>
@@ -559,7 +559,7 @@ export default function AdminDashboard() {
                                 handlePaymentUpdate(
                                   participant.id,
                                   Number(e.target.value),
-                                  participant.totalAmount || 100,
+                                  participant.totalAmount || 300,
                                 )
                               }
                               className="w-20 bg-gray-700 border-gray-600 text-white text-sm"
@@ -572,8 +572,8 @@ export default function AdminDashboard() {
                             onClick={() =>
                               handlePaymentUpdate(
                                 participant.id,
-                                participant.totalAmount || 100,
-                                participant.totalAmount || 100,
+                                participant.totalAmount || 300,
+                                participant.totalAmount || 300,
                               )
                             }
                             size="sm"
@@ -583,7 +583,7 @@ export default function AdminDashboard() {
                           </Button>
 
                           <Button
-                            onClick={() => handlePaymentUpdate(participant.id, 0, participant.totalAmount || 100)}
+                            onClick={() => handlePaymentUpdate(participant.id, 0, participant.totalAmount || 300)}
                             size="sm"
                             className="bg-red-600 hover:bg-red-700 text-xs"
                           >
