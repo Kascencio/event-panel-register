@@ -165,7 +165,7 @@ export default function AdminDashboard() {
         phone: "",
         age: "",
         email: "",
-        totalAmount: 100,
+        totalAmount: 300,
         paidAmount: 0,
       })
       setShowAddForm(false)
